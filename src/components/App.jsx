@@ -1,10 +1,10 @@
-import Account from "./Account";
+import Account from './Account';
 
 export const App = () => {
   return (
     <div>
-      <Account/>
-      <h2>User Account</h2>
+      <h2>User Account data</h2>
+      <Account />
     </div>
   );
 };
