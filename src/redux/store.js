@@ -1,32 +1,48 @@
-import { createStore } from 'redux';
+import { combineReducers, createStore } from 'redux';
 import { devToolsEnhancer } from '@redux-devtools/extension';
 
-const initialState = {
-  account: {
-    balance: 100,
-  },
+const accountInitialState = {
+  balance: 100,
+  username: 'Jacob',
 };
 
-const rootReducer = (state = initialState, action) => {
+const localeInitialState = {
+  lang: 'en',
+};
+
+const accountReducer = (state = accountInitialState, action) => {
   switch (action.type) {
     case 'account/deposit':
       return {
-        account: {
-          balance: state.account.balance + action.payload,
-        },
+        ...state,
+        balance: state.balance + action.payload,
       };
-
     case 'account/withdraw':
       return {
-        account: {
-          balance: state.account.balance - action.payload,
-        },
+        ...state,
+        balance: state.balance - action.payload,
       };
-      
     default:
       return state;
   }
 };
+
+const localeReducer = (state = localeInitialState, action) => {
+  switch (action.type) {
+    case 'locale/changeLang':
+      return {
+        ...state,
+        lang: action.payload,
+      };
+    default:
+      return state;
+  }
+};
+
+const rootReducer = combineReducers({
+    account: accountReducer,
+    locale: localeReducer,
+})
 
 const enhancer = devToolsEnhancer();
 
@@ -43,5 +59,12 @@ export const withdraw = value => {
   return {
     type: 'account/withdraw',
     payload: value,
+  };
+};
+
+export const changeLang = newLang => {
+  return {
+    type: 'locale/changeLang',
+    payload: newLang,
   };
 };
